@@ -1,0 +1,55 @@
+# GitGuardian configuration for Permiflow
+# Used by ggshield in TeamCity CI
+
+version: 2
+
+# Global exclusions
+secret:
+  ignored_paths:
+    - "**/*.md"
+    - "**/*.txt"
+    - "**/*.png"
+    - "**/*.jpg"
+    - "**/*.jpeg"
+    - "**/*.gif"
+    - "**/*.svg"
+    - "**/*.lock"
+    - "**/node_modules/**"
+    - "**/dist/**"
+    - "**/build/**"
+    - "**/.terraform/**"
+    - "**/vendor/**"
+
+  ignored_detectors:
+    # Example: ignore weak entropy detectors if you get noise
+    # - Generic High Entropy Secret
+
+  # Ignore secrets already revoked or known false positives
+  ignored_matches:
+    # - name: "Example ignored secret"
+    #   match: "abcdef123456"
+    #   reason: "Test value"
+    #   expiry: "2025-12-31"
+
+# CI behavior
+ci:
+  # Fail the build if secrets are found
+  fail_on_secrets: true
+
+  # Show findings clearly in CI logs
+  verbose: true
+
+  # Only scan files changed in the PR (recommended for TeamCity PR builds)
+  scan_diff: true
+
+# Optional: enable infra-as-code focused scanning
+iac:
+  enabled: true
+  ignored_paths:
+    - "**/examples/**"
+    - "**/test/**"
+
+# Optional: hooks configuration (not used by CI, but useful locally)
+hooks:
+  pre-commit:
+    enabled: false
